@@ -19,7 +19,7 @@ const Write = () => {
             <h1 className=''>Create A New Post</h1>
             <form className='flex flex-col gap-6'>
                 <button className='w-max p-2 shadow-md rounded-xl text-sm text-gray-500 bg-white'>Add a cover image</button>
-                <input className="text-4xl font-semibold bg-transparent outline-none" type='text' placeholder='My Awesome Story'/>
+                <input className="text-4xl font-semibold bg-transparent outline-none" type='text' placeholder='My Awesome Story' />
                 <div className='flex items-center gap-2'>
                     <label htmlFor=''>Choose A Category</label>
                     <select name='cat' id='' className='p-2 rounded-xl bg-white shadow-md'>
@@ -32,9 +32,31 @@ const Write = () => {
                         <option value=""></option>
                     </select>
                 </div>
-                <textarea name='desc' placeholder='Short Description' className='p-2 rounded-xl bg-white shadow-md'/>
-                <ReactQuill theme="snow" className='flex-1 p-2 rounded-xl bg-white shadow-md'/>
-                <button></button>
+                <textarea name='desc' placeholder='Short Description' className='p-2 rounded-xl bg-white shadow-md' />
+                <div className="flex-1 rounded-xl bg-white shadow-md overflow-hidden">
+                    <ReactQuill theme="snow" className='h-64' />
+                </div>
+                <button className="
+                bg-blue-800 
+                text-white 
+                font-medium 
+                rounded-full 
+                mt-4 
+                mb-4
+                px-6 py-3 
+                w-36
+                shadow-md
+                hover:bg-blue-700
+                hover:shadow-lg
+                active:scale-95
+                transition-all 
+                duration-200
+                cursor-pointer
+                "
+                >
+                    Send
+                </button>
+
             </form>
         </div>
     )
