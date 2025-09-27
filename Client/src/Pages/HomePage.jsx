@@ -73,7 +73,7 @@ const HomePage = () => {
                 <PostList/>
             </div>
 
-         <StickyLayout/>
+         {/* <StickyLayout/> */}
         </div>
     )
 }

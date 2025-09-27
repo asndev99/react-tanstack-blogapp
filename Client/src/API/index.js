@@ -3,19 +3,22 @@ import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 
-export const fetchPost = async () => {
-    const res = await axios.get(`${API_BASE_URL}/posts`);
+export const fetchPost = async (pageParams) => {
+    const res = await axios.get(`${API_BASE_URL}/posts`, { params: { page: pageParams } });
     return res.data;
 }
 
 export const createPost = async (data, token) => {
-    console.log(data, "create post data");
-    console.log(token, "TOKEN");
     const res = await axios.post(`${API_BASE_URL}/posts`, data, {
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
         }
     })
     return res.data;
+}
 
+export const getPostBySlug = async(slug) => {
+    const res = await axios.get(`${API_BASE_URL}/posts/${slug}`);
+    return res.data;
 }

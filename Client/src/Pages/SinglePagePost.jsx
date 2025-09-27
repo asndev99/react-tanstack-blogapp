@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import postImg from "../assets/postImg.jpeg";
 import userImg from "../assets/userImg.jpeg";
 import facebook from "../assets/facebook.svg";
@@ -7,8 +7,18 @@ import instagram from "../assets/instagram.svg"
 import PostMenuAction from '../components/PostMenuAction';
 import Search from '../components/Search';
 import Comments from '../components/Comments';
+import { useQuery } from '@tanstack/react-query';
+import { getPostBySlug } from '../API';
 
 const SinglePagePost = () => {
+  const { slug } = useParams()
+  const {isPending,data,error } = useQuery({
+    queryKey: ["posts"],
+    queryFn: () => getPostBySlug(slug)
+  })
+
+  console.log(data,"single post page data");
+  
   return (
     <div className='flex flex-col gap-8'>
       {/* detail */}
@@ -85,7 +95,7 @@ const SinglePagePost = () => {
           </div>
         </div>
       </div>
-      <Comments/>
+      <Comments />
     </div>
   )
 }

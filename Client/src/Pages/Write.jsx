@@ -34,24 +34,34 @@ const Write = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         const formData = new FormData(e.target);
 
-        const formdata = {
-            title: formData.get('title'),
-            category: formData.get('category'),
-            desc: formData.get('desc'),
-            content: value
-        };
-        mutation.mutate(formdata);
+        formData.append("content", value);
+
+        console.log([...formData.entries()]);
+        mutation.mutate(formData);
     };
+
 
     return (
         <div className='h-screen flex flex-col gap-6'>
             <h1>Create A New Post</h1>
             <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
-                <button type="button" className='w-max p-2 shadow-md rounded-xl text-sm text-gray-500 bg-white'>
-                    Add a cover image
-                </button>
+                <input
+                    name='file'
+                    type="file"
+                    className="
+                     block w-full max-w-xs text-sm text-gray-700
+                     file:mr-4 file:py-2 file:px-4 
+                     file:rounded-lg file:border-0 
+                     file:text-sm file:font-medium
+                     file:bg-blue-600 file:text-white
+                     hover:file:bg-blue-700
+                     cursor-pointer shadow-lg rounded-xl
+                     transition duration-200 ease-in-out
+                    "
+                />
                 <input
                     className="text-4xl font-semibold bg-transparent outline-none"
                     type='text'
