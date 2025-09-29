@@ -1,17 +1,28 @@
+import cloudinary from "../lib/cloudinary.config.js";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
 
 
-export const getPosts = async(req,res) => {
-    try{
-        const posts = await Post.find({});
-        return res.status(200).json(posts);
+export const getPosts = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 2;
+
+        const posts = await Post.find()
+            .populate("user", "username img")
+            .limit(limit)
+            .skip((page - 1) * limit);
+
+        const totalPosts = await Post.countDocuments();
+        const hasMore = page * limit < totalPosts;
+
+        return res.status(200).json({ posts, hasMore });
+    } catch (error) {
+        console.error("Error in getting posts", error);
+        return res.status(500).json({ message: "Something went wrong" });
     }
-    catch(error){
-        console.log("Error in getting posts",error);
-        return res.status(500).json({message:"Something went wrong"});
-    }
-}
+};
+
 export const getPost = async (req, res) => {
     try {
         const post = await Post.findOne({ slug: req.params.slug }).populate("user", "username img");
@@ -25,6 +36,8 @@ export const getPost = async (req, res) => {
 
 export const createPost = async (req, res) => {
     try {
+
+        console.log(req.file);
         const clerkUserId = req.auth.userId;
 
         console.log(req.headers);
@@ -51,7 +64,20 @@ export const createPost = async (req, res) => {
             counter++;
         }
 
-        const newPost = new Post({ user: user._id, slug, ...req.body });
+        let url = null;
+        if (req.file) {
+            url = await new Promise((resolve, reject) => {
+                cloudinary.uploader
+                    .upload_stream({ folder: "profile_pictures" }, (error, result) => {
+                        if (error) reject(error);
+                        else resolve(result);
+                    })
+                    .end(req.file.buffer);
+            });
+
+        }
+
+        const newPost = new Post({ user: user._id, slug, img: url.secure_url ?? null, ...req.body });
 
         const post = await newPost.save();
         res.status(200).json(post);

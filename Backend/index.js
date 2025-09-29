@@ -18,7 +18,7 @@ app.use(cors());
 app.use(clerkMiddleware());
 app.use("/webhooks", webhookRouter);
 app.use(express.json());
-app.use(logger); 
+app.use(logger);
 
 
 

@@ -18,7 +18,30 @@ export const createPost = async (data, token) => {
     return res.data;
 }
 
-export const getPostBySlug = async(slug) => {
+export const getPostBySlug = async (slug) => {
     const res = await axios.get(`${API_BASE_URL}/posts/${slug}`);
+    return res.data;
+}
+
+export const getPostComments = async (postId) => {
+    const res = await axios.get(`${API_BASE_URL}/comments/${postId}`);
+    return res.data;
+}
+
+export const addComent = async (token, data, postId) => {
+    const res = await axios.post(`${API_BASE_URL}/comments/${postId}`, data, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    return res.data;
+}
+
+export const getSavedPosts = async(token) => {
+    const res = await axios.get(`${API_BASE_URL}/users/saved`,{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    });
     return res.data;
 }
